@@ -13,7 +13,7 @@ import java.util.List;
 import static com.kh.totalapp.utils.Common.CORS_ORIGIN;
 
 @Slf4j
-@CrossOrigin(origins = CORS_ORIGIN)
+//@CrossOrigin(origins = CORS_ORIGIN)
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -54,18 +54,7 @@ public class MemberController {
         boolean isTrue = memberService.modifyMember(memberDTO);
         return ResponseEntity.ok(isTrue);
     }
-    // 회원 등록
-    @PostMapping("/new")
-    public ResponseEntity<Boolean> memberRegister(@RequestBody MemberReqDTO memberDTO) {
-        boolean isTrue = memberService.saveMember(memberDTO);
-        return ResponseEntity.ok(isTrue);
-    }
-    // 로그인
-    @PostMapping("/login")
-    public ResponseEntity<Boolean> memberLogin(@RequestBody MemberReqDTO memberDTO) {
-        boolean isTrue = memberService.login(memberDTO.getEmail(), memberDTO.getPassword());
-        return ResponseEntity.ok(isTrue);
-    }
+
     // 회원 존재 여부 확인
     @GetMapping("/check")
     public ResponseEntity<Boolean> isMember(@RequestParam String email) {

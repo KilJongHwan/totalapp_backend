@@ -18,7 +18,7 @@ import static com.kh.totalapp.utils.Common.CORS_ORIGIN;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins = CORS_ORIGIN)
+//@CrossOrigin(origins = CORS_ORIGIN)
 @RequestMapping("/chat")
 public class ChatController {
     private final ChatService chatService;

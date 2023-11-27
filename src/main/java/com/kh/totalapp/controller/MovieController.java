@@ -15,7 +15,7 @@ import java.util.Map;
 import static com.kh.totalapp.utils.Common.CORS_ORIGIN;
 
 @Slf4j
-@CrossOrigin(origins = CORS_ORIGIN)
+//@CrossOrigin(origins = CORS_ORIGIN)
 @RestController
 @RequestMapping("/api/movies")
 @RequiredArgsConstructor
