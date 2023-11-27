@@ -22,6 +22,7 @@ import static com.kh.totalapp.utils.Common.CORS_ORIGIN;
 @RequestMapping("/chat")
 public class ChatController {
     private final ChatService chatService;
+    // 새로운 방 만들기
     @PostMapping("/new")
     public ResponseEntity<String> createRoom(@RequestBody ChatRoomReqDTO chatRoomReqDTO) {
         log.warn("chatRoomDto : {}", chatRoomReqDTO);
@@ -29,6 +30,7 @@ public class ChatController {
         System.out.println(room.getRoomId());
         return new ResponseEntity<>(room.getRoomId(), HttpStatus.OK);
     }
+    // chatroom 가져오기
     @GetMapping("/list")
     public List<ChatRoomResDTO> findAllRoom() {
         return chatService.findAllRoom();
@@ -38,12 +40,14 @@ public class ChatController {
     public ChatRoomResDTO findRoomById(@PathVariable String roomId) {
         return chatService.findRoomById(roomId);
     }
+    // 메세지 저장하기
     @PostMapping("/message")
     public ResponseEntity<Void> saveMessage(@RequestBody ChatMessageDTO chatMessageDTO) {
         chatService.saveMessage(chatMessageDTO.getRoomId(), chatMessageDTO.getSender(), chatMessageDTO.getMessage());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 이전 메세지 가져오기
     @GetMapping("/message/{roomId}")
     public List<Chat> getRecentMessages(@PathVariable String roomId) {
         return chatService.getRecentMessages(roomId);

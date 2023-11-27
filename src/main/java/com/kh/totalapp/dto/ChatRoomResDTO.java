@@ -35,6 +35,7 @@ public class ChatRoomResDTO {
         this.sessions = Collections.newSetFromMap(new ConcurrentHashMap<>());
     }
 
+
     public void handlerActions(WebSocketSession session, ChatMessageDTO chatMessage, ChatService chatService) {
         if (chatMessage.getType() != null && chatMessage.getType().equals(ChatMessageDTO.MessageType.ENTER)) {
             sessions.add(session);
