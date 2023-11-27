@@ -1,6 +1,7 @@
 package com.kh.totalapp.controller;
 
 import com.kh.totalapp.dto.MemberReqDTO;
+import com.kh.totalapp.dto.MemberResDTO;
 import com.kh.totalapp.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +22,8 @@ public class MemberController {
     private final MemberService memberService;
     // 회원 전체 조회
     @GetMapping("/list")
-    public ResponseEntity<List<MemberReqDTO>> memberList() {
-        List<MemberReqDTO> list = memberService.getMemberList();
+    public ResponseEntity<List<MemberResDTO>> memberList() {
+        List<MemberResDTO> list = memberService.getMemberList();
         return ResponseEntity.ok(list);
     }
     // 총 페이지 수
@@ -36,31 +37,23 @@ public class MemberController {
 
     // 회원 조회 페이지네이션
     @GetMapping("/list/page")
-    public ResponseEntity<List<MemberReqDTO>> memberList(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<List<MemberResDTO>> memberList(@RequestParam(defaultValue = "0") int page,
                                                          @RequestParam(defaultValue = "20") int size) {
-        List<MemberReqDTO> list = memberService.getMemberList(page, size);
+        List<MemberResDTO> list = memberService.getMemberList(page, size);
         return ResponseEntity.ok(list);
     }
     // 회원 상세 조회
     @GetMapping("/detail/{email}")
-    public ResponseEntity<MemberReqDTO> memberDetail(@PathVariable String email) {
-        MemberReqDTO memberDto = memberService.getMemberDetail(email);
+    public ResponseEntity<MemberResDTO> memberDetail(@PathVariable String email) {
+        MemberResDTO memberDto = memberService.getMemberDetail(email);
         return ResponseEntity.ok(memberDto);
     }
     // 회원 수정
     @PutMapping("/modify")
-    public ResponseEntity<Boolean> memberModify(@RequestBody MemberReqDTO memberDTO) {
-        log.info("memberDto: {}", memberDTO.getEmail());
-        boolean isTrue = memberService.modifyMember(memberDTO);
+    public ResponseEntity<Boolean> memberModify(@RequestBody MemberReqDTO memberDto) {
+        log.info("memberDto: {}", memberDto.getEmail());
+        boolean isTrue = memberService.modifyMember(memberDto);
         return ResponseEntity.ok(isTrue);
-    }
-
-    // 회원 존재 여부 확인
-    @GetMapping("/check")
-    public ResponseEntity<Boolean> isMember(@RequestParam String email) {
-        log.info("email: {}", email);
-        boolean isReg = memberService.isMember(email);
-        return ResponseEntity.ok(!isReg);
     }
     // 회원 삭제
     @DeleteMapping("/del/{email}")

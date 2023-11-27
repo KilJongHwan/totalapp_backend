@@ -1,6 +1,7 @@
 package com.kh.totalapp.service;
 
 import com.kh.totalapp.dto.MemberReqDTO;
+import com.kh.totalapp.dto.MemberResDTO;
 import com.kh.totalapp.entity.Member;
 import com.kh.totalapp.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,20 +26,19 @@ public class MemberService {
     }
 
     // 회원 상세 조회
-    public MemberReqDTO getMemberDetail(String email) {
+    public MemberResDTO getMemberDetail(String email) {
         Member member = memberRepository.findByEmail(email).orElseThrow(
                 () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
         );
         return convertEntityToDto(member);
     }
-//    // 회원 가입
-//    public boolean saveMember(MemberReqDTO memberDto) {
+    // 회원 가입
+//    public boolean saveMember(MemberReqDto memberDto) {
 //        Member member = new Member();
 //        member.setEmail(memberDto.getEmail());
 //        member.setName(memberDto.getName());
 //        member.setPassword(memberDto.getPassword());
 //        member.setImage(memberDto.getImage());
-//        member.setRegDate(memberDto.getRegDate());
 //        memberRepository.save(member);
 //        return true;
 //    }
@@ -58,7 +58,7 @@ public class MemberService {
         }
     }
 
-//    // 로그인
+    // 로그인
 //    public boolean login(String email, String pwd) {
 //        log.info("email: {}, pwd: {}", email, pwd);
 //        Optional<Member> member = memberRepository.findByEmailAndPassword(email, pwd);
@@ -79,9 +79,9 @@ public class MemberService {
     }
 
     // 회원 전체 조회
-    public List<MemberReqDTO> getMemberList() {
+    public List<MemberResDTO> getMemberList() {
         List<Member> members = memberRepository.findAll();
-        List<MemberReqDTO> memberDtos = new ArrayList<>();
+        List<MemberResDTO> memberDtos = new ArrayList<>();
         for(Member member : members) {
             memberDtos.add(convertEntityToDto(member));
         }
@@ -93,10 +93,10 @@ public class MemberService {
     }
 
     // 회원 조회 : 페이지 네이션
-    public List<MemberReqDTO> getMemberList(int page, int size) {
+    public List<MemberResDTO> getMemberList(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         List<Member> members = memberRepository.findAll(pageable).getContent();
-        List<MemberReqDTO> memberDtos = new ArrayList<>();
+        List<MemberResDTO> memberDtos = new ArrayList<>();
         for(Member member : members) {
             memberDtos.add(convertEntityToDto(member));
         }
@@ -104,11 +104,10 @@ public class MemberService {
     }
 
     // 회원 엔티티를 회원 DTO로 변환
-    private MemberReqDTO convertEntityToDto(Member member) {
-        MemberReqDTO memberDto = new MemberReqDTO();
+    private MemberResDTO convertEntityToDto(Member member) {
+        MemberResDTO memberDto = new MemberResDTO();
         memberDto.setEmail(member.getEmail());
         memberDto.setName(member.getName());
-        memberDto.setPassword(member.getPassword());
         memberDto.setImage(member.getImage());
         memberDto.setRegDate(member.getRegDate());
         return memberDto;
