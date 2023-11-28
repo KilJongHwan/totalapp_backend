@@ -25,20 +25,25 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 
-    public MemberResDTO signup(MemberReqDTO requestDTO) {
-        if (memberRepository.existsByEmail(requestDTO.getEmail())) {
-            throw new RuntimeException("이미 가입되어있는 유저입니다..");
+    public MemberResDTO signup(MemberReqDTO requestDto) {
+        if (memberRepository.existsByEmail(requestDto.getEmail())) {
+            throw new RuntimeException("이미 가입되어 있는 유저입니다");
         }
-        Member member = requestDTO.toEntity(passwordEncoder);
+        Member member = requestDto.toEntity(passwordEncoder);
         return MemberResDTO.of(memberRepository.save(member));
     }
-    public TokenDTO login(MemberReqDTO requestDTO) {
-        UsernamePasswordAuthenticationToken authenticationToken = requestDTO.toAuthentication();
+    public TokenDTO login(MemberReqDTO requestDto) {
+//        try {
+        UsernamePasswordAuthenticationToken authenticationToken = requestDto.toAuthentication();
         log.info("authenticationToken: {}", authenticationToken);
 
         Authentication authentication = managerBuilder.getObject().authenticate(authenticationToken);
         log.info("authentication: {}", authentication);
 
         return tokenProvider.generateTokenDTO(authentication);
+//        } catch (Exception e) {
+//            log.error("Login error: ", e);
+//            throw e;
+//        }
     }
 }

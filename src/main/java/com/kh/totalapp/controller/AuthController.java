@@ -20,12 +20,12 @@ public class AuthController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<MemberResDTO> signup(@RequestBody MemberReqDTO requestDto) {
-        return ResponseEntity.ok(authService.signup(requestDto));
+    public ResponseEntity<MemberResDTO> signup(@RequestBody MemberReqDTO requestDTO) {
+        return ResponseEntity.ok(authService.signup(requestDTO));
     }
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody MemberReqDTO requestDto) {
-        return ResponseEntity.ok(authService.login(requestDto));
+    public ResponseEntity<TokenDTO> login(@RequestBody MemberReqDTO requestDTO) {
+        return ResponseEntity.ok(authService.login(requestDTO));
     }
     // 회원 존재 여부 확인
     @GetMapping("/exists/{email}")

@@ -1,5 +1,6 @@
 package com.kh.totalapp.security;
 
+
 import com.kh.totalapp.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,19 +20,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebSecurity
 @Component
-public class WebSecurityConfig  implements WebMvcConfigurer {
+public class WebSecurityConfig implements WebMvcConfigurer {
+
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint; // 인증 실패 시 처리할 클래스
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler; // 인가 실패 시 처리할 클래스
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // BCrypt 암호화 객체를 Bean으로 등록
     }
 
     @Bean // SecurityFilterChain 객체를 Bean으로 등록
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+
                 .httpBasic()
                 .and()
                 .csrf().disable()
@@ -48,7 +50,8 @@ public class WebSecurityConfig  implements WebMvcConfigurer {
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider))
                 .and()
-                .cors();
+                .cors(); // .and().cors() 추가 된 부분
+
         return http.build();
     }
     @Override  // 메소드 오버라이딩, localhost:3000 번으로 들어오는 요청 허가

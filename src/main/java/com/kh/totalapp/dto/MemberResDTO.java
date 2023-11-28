@@ -21,7 +21,7 @@ public class MemberResDTO {
         return MemberResDTO.builder()
                 .name(member.getName())
                 .email(member.getEmail())
-                .image(member.getEmail())
+                .image(member.getImage())
                 .regDate(member.getRegDate())
                 .build();
     }

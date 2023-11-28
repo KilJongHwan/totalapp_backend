@@ -29,13 +29,15 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "member",fetch = FetchType.LAZY)
     private List<Comment> comments;
+
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Board> boards;
 
-    @Builder
-    public Member(String name, String password, String email, String image, Authority authority){
+    @Builder // 빌더 패턴 적용
+    public Member(String name, String password, String email, String image, Authority authority) {
         this.name = name;
         this.password = password;
         this.email = email;
