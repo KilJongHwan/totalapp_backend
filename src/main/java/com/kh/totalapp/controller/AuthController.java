@@ -34,4 +34,9 @@ public class AuthController {
         boolean isTrue = memberService.isMember(email);
         return ResponseEntity.ok(!isTrue);
     }
+    @PostMapping("/refresh")
+    public ResponseEntity<TokenDTO> refresh(@RequestBody String refreshToken) {
+        return ResponseEntity.ok(authService.refresh(refreshToken));
+    }
+
 }

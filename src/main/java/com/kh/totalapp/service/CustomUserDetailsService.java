@@ -32,7 +32,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(member.getAuthority().toString());
         // UserDetails 타입의 객체를 생성해 리턴
         return new User(
-                String.valueOf(member.getId()),
+//                String.valueOf(member.getId()),
+                member.getEmail(),
                 member.getPassword(),
                 Collections.singleton(grantedAuthority)
         );

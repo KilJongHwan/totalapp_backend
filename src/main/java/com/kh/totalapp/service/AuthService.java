@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,8 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+
+    private final CustomUserDetailsService customUserDetailsService;
 
     public MemberResDTO signup(MemberReqDTO requestDto) {
         if (memberRepository.existsByEmail(requestDto.getEmail())) {
@@ -45,5 +48,14 @@ public class AuthService {
 //            log.error("Login error: ", e);
 //            throw e;
 //        }
+    }
+    public TokenDTO refresh(String refreshToken) {
+        if (!tokenProvider.validateToken(refreshToken)) {
+            throw new RuntimeException("유효하지 않은 토큰");
+        }
+        String userEmail = tokenProvider.getAuthentication(refreshToken).getName();
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(userEmail);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return tokenProvider.generateTokenDTO(authentication);
     }
 }
