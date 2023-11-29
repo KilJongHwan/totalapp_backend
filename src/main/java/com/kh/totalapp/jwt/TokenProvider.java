@@ -56,9 +56,12 @@ public class TokenProvider {
                 .compact();
         // 리프레쉬 토큰 생성
         String refreshToken = io.jsonwebtoken.Jwts.builder()
+                .setSubject(authentication.getName())
+                .claim(AUTHORITIES_KEY, authorities)
                 .setExpiration(refreshTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
+
         // 토큰 정보를 담은 TokenDTO 객체 생성
         return TokenDTO.builder()
                 .grantType(BEARER_TYPE)
@@ -108,6 +111,10 @@ public class TokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+    // access 토큰 재발급
+    public String generateAccessToken(Authentication authentication) {
+        return generateTokenDTO(authentication).getAccessToken();
     }
 
 }

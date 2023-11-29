@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +35,6 @@ public class AuthService {
         return MemberResDTO.of(memberRepository.save(member));
     }
     public TokenDTO login(MemberReqDTO requestDto) {
-//        try {
         UsernamePasswordAuthenticationToken authenticationToken = requestDto.toAuthentication();
         log.info("authenticationToken: {}", authenticationToken);
 
@@ -44,18 +42,12 @@ public class AuthService {
         log.info("authentication: {}", authentication);
 
         return tokenProvider.generateTokenDTO(authentication);
-//        } catch (Exception e) {
-//            log.error("Login error: ", e);
-//            throw e;
-//        }
     }
-    public TokenDTO refresh(String refreshToken) {
+    public String createAccessToken(String refreshToken) {
         if (!tokenProvider.validateToken(refreshToken)) {
             throw new RuntimeException("유효하지 않은 토큰");
         }
-        String userEmail = tokenProvider.getAuthentication(refreshToken).getName();
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(userEmail);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-        return tokenProvider.generateTokenDTO(authentication);
+        Authentication authentication = tokenProvider.getAuthentication(refreshToken);
+        return tokenProvider.generateAccessToken(authentication);
     }
 }
